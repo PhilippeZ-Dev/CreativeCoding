@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://c0hlegqjy3u62"]
+
+[ext_resource type="Shader" path="res://Shaders/Mandelbrot.gdshader" id="1_au41u"]
+[ext_resource type="Texture2D" uid="uid://e0oojvo7il5v" path="res://Ressources/MandelbrotGradient.tres" id="2_0qkbc"]
+
+[resource]
+shader = ExtResource("1_au41u")
+shader_parameter/offset = Vector2(-0.745, 0.1)
+shader_parameter/zoom = 0.4
+shader_parameter/zoomSpeed = 3.0
+shader_parameter/iterations = 500
+shader_parameter/gradient = ExtResource("2_0qkbc")

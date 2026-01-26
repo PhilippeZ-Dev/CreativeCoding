@@ -1,0 +1,18 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://b3fdn3v2visgg"]
+
+[ext_resource type="Shader" path="res://Shaders/BurningShip.gdshader" id="1_1pik7"]
+
+[sub_resource type="Gradient" id="Gradient_k6o70"]
+offsets = PackedFloat32Array(0, 0.320285, 1)
+colors = PackedColorArray(0, 0.556863, 0.376471, 1, 0.77376, 0.184319, 0.670995, 1, 0.859617, 0.921273, 0.894796, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_qoftq"]
+gradient = SubResource("Gradient_k6o70")
+
+[resource]
+shader = ExtResource("1_1pik7")
+shader_parameter/offset = Vector2(-1.73, -0.041)
+shader_parameter/zoom = 1.0
+shader_parameter/zoomSpeed = 3.0
+shader_parameter/iterations = 40
+shader_parameter/gradient = SubResource("GradientTexture1D_qoftq")

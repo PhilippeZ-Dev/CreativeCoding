@@ -1,0 +1,63 @@
+[gd_scene load_steps=7 format=3 uid="uid://cl5u1sbley04e"]
+
+[ext_resource type="Shader" path="res://Shaders/Mandelbrot.gdshader" id="1_i8byh"]
+[ext_resource type="Script" path="res://Scripts/Shapes.gd" id="1_wpswc"]
+[ext_resource type="Texture2D" uid="uid://cefp23e5t5tny" path="res://icon.svg" id="2_jygsv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_thp2w"]
+shader = ExtResource("1_i8byh")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eoume"]
+bg_color = Color(1, 1, 1, 0.784314)
+
+[sub_resource type="Theme" id="Theme_54jo5"]
+Label/colors/font_color = Color(0, 0, 0, 1)
+MarginContainer/constants/margin_bottom = 10
+MarginContainer/constants/margin_left = 10
+MarginContainer/constants/margin_right = 10
+MarginContainer/constants/margin_top = 10
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_eoume")
+
+[node name="Fractals" type="Node2D"]
+
+[node name="Mandelbrot" type="Sprite2D" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_thp2w")
+position = Vector2(360, 360)
+scale = Vector2(5.625, 5.625)
+texture = ExtResource("2_jygsv")
+
+[node name="Shapes" type="Node2D" parent="."]
+script = ExtResource("1_wpswc")
+shape = 3
+KochColor = Color(0.937255, 0.831373, 1, 1)
+
+[node name="Control" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 720.0
+offset_bottom = 720.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.7
+anchor_right = 0.3
+anchor_bottom = 1.0
+grow_vertical = 0
+theme = SubResource("Theme_54jo5")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/PanelContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Control/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2

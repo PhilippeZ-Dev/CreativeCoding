@@ -1,0 +1,107 @@
+[gd_scene load_steps=12 format=3 uid="uid://cl5u1sbley04e"]
+
+[ext_resource type="Material" uid="uid://c0hlegqjy3u62" path="res://Materials/M_Mandelbrot.tres" id="1_bup5k"]
+[ext_resource type="Script" path="res://Scripts/Shapes.gd" id="1_wpswc"]
+[ext_resource type="Material" uid="uid://b3fdn3v2visgg" path="res://Materials/M_BurnignShip.tres" id="3_e6vod"]
+[ext_resource type="Script" path="res://Scripts/Screenshot.gd" id="3_iaxo3"]
+[ext_resource type="Shader" path="res://Shaders/JuliaSets.gdshader" id="4_h4nn3"]
+[ext_resource type="Script" path="res://Scripts/JuliaSetsAnimation.gd" id="5_d6kcm"]
+[ext_resource type="Gradient" uid="uid://bn63wg0mc5xof" path="res://Ressources/JuliaMandelbrotGradient.tres" id="5_thm8b"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_0qdkc"]
+gradient = ExtResource("5_thm8b")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tcxcm"]
+shader = ExtResource("4_h4nn3")
+shader_parameter/isPortrait = false
+shader_parameter/c = Vector2(-0.745, 0.095)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/zoom = 0.2
+shader_parameter/iterations = 75
+shader_parameter/gradient = SubResource("GradientTexture1D_0qdkc")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eoume"]
+bg_color = Color(1, 1, 1, 0.784314)
+
+[sub_resource type="Theme" id="Theme_54jo5"]
+Label/colors/font_color = Color(0, 0, 0, 1)
+MarginContainer/constants/margin_bottom = 10
+MarginContainer/constants/margin_left = 10
+MarginContainer/constants/margin_right = 10
+MarginContainer/constants/margin_top = 10
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_eoume")
+
+[node name="Fractals" type="Node2D"]
+
+[node name="Shapes" type="Node2D" parent="."]
+visible = false
+script = ExtResource("1_wpswc")
+shape = 3
+radius = 500
+KochDepth = 5
+KochColor = Color(0.937255, 0.831373, 1, 1)
+sierpinskiDepth = 7
+
+[node name="Fractals" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Mandelbrot_rect" type="ColorRect" parent="Fractals"]
+material = ExtResource("1_bup5k")
+layout_mode = 0
+offset_right = 1000.0
+offset_bottom = 1000.0
+metadata/_edit_use_anchors_ = true
+
+[node name="BurningShip_rect" type="ColorRect" parent="Fractals"]
+visible = false
+material = ExtResource("3_e6vod")
+layout_mode = 0
+offset_right = 1000.0
+offset_bottom = 1000.0
+metadata/_edit_use_anchors_ = true
+
+[node name="Julia_rect" type="ColorRect" parent="Fractals"]
+material = SubResource("ShaderMaterial_tcxcm")
+layout_mode = 0
+offset_right = 1000.0
+offset_bottom = 1000.0
+script = ExtResource("5_d6kcm")
+speed = 3.0
+metadata/_edit_use_anchors_ = true
+
+[node name="Controls" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 720.0
+offset_bottom = 720.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Controls"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.7
+anchor_right = 0.3
+anchor_bottom = 1.0
+grow_vertical = 0
+theme = SubResource("Theme_54jo5")
+
+[node name="MarginContainer" type="MarginContainer" parent="Controls/PanelContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Controls/PanelContainer/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Controls/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Screenshot" type="Node" parent="."]
+script = ExtResource("3_iaxo3")
