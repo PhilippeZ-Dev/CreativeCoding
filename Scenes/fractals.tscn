@@ -105,3 +105,6 @@ layout_mode = 2
 
 [node name="Screenshot" type="Node" parent="."]
 script = ExtResource("3_iaxo3")
+mode = 1
+destinationFolderPath = "res://Screenshots/Test/"
+screenshotName = "test"
