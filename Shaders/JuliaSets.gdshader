@@ -67,40 +67,9 @@ void fragment()
 		}
 		iter++;
 	}
-
-	//float orbit = 1000.0; // Start with a huge number
-	//for (int i = 0; i < iterations; i++)
-	//{
-		////z = Mandelbrot(z, c);
-		//z = BurningShip(z, c);
-		//
-		//// Orbit Trap: track the minimum distance to the origin
-		//orbit = min(orbit, length(z));
-		//
-		//if (length(z) > 2.0) break;
-		//iter++;
-	//}
-
-	//if (iter == iterations)
-	//{
-		//// Instead of solid black, use the 'orbit' value
-		//float strength = exp(-orbit); // Exponential falloff looks best
-		//COLOR = vec4(vec3(strength * 0.5), 1.0); // Creates a soft internal glow
-	//}
-	//
-	//
-	////if(iter == iterations)
-	////{
-		//////COLOR = vec4(0.0,0.0,0.0,1.0);
-		////float edge = clamp(1.0 - (length(z) / 2.0), 0.0, 1.0);
-		////COLOR = vec4(vec3(edge * 0.2), 1.0);
-	////}
-	//else
-	{
-		float dist = length(z);
-		float smoothIter = float(iter) + 1.0 - log2(log2(dist));
-		float t = smoothIter / 40.0;
-
-		COLOR = texture(gradient, vec2(fract(t), 0.0));
-	}
+	
+	float dist = length(z);
+	float smoothIter = float(iter) + 1.0 - log2(log2(dist));
+	float t = smoothIter / 40.0;
+	COLOR = texture(gradient, vec2(fract(t), 0.0));
 }

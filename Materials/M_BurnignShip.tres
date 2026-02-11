@@ -1,6 +1,6 @@
-[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://b3fdn3v2visgg"]
+[gd_resource type="ShaderMaterial" format=3 uid="uid://b3fdn3v2visgg"]
 
-[ext_resource type="Shader" path="res://Shaders/BurningShip.gdshader" id="1_1pik7"]
+[ext_resource type="Shader" uid="uid://bg8fd8i6gypiq" path="res://Shaders/BurningShip.gdshader" id="1_1pik7"]
 
 [sub_resource type="Gradient" id="Gradient_k6o70"]
 offsets = PackedFloat32Array(0, 0.320285, 1)

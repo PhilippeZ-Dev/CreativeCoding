@@ -1,12 +1,14 @@
-[gd_scene load_steps=12 format=3 uid="uid://cl5u1sbley04e"]
+[gd_scene format=3 uid="uid://cl5u1sbley04e"]
 
 [ext_resource type="Material" uid="uid://c0hlegqjy3u62" path="res://Materials/M_Mandelbrot.tres" id="1_bup5k"]
-[ext_resource type="Script" path="res://Scripts/Shapes.gd" id="1_wpswc"]
+[ext_resource type="Script" uid="uid://44j3dk63ccaq" path="res://Scripts/Shapes.gd" id="1_wpswc"]
 [ext_resource type="Material" uid="uid://b3fdn3v2visgg" path="res://Materials/M_BurnignShip.tres" id="3_e6vod"]
-[ext_resource type="Script" path="res://Scripts/Screenshot.gd" id="3_iaxo3"]
-[ext_resource type="Shader" path="res://Shaders/JuliaSets.gdshader" id="4_h4nn3"]
-[ext_resource type="Script" path="res://Scripts/JuliaSetsAnimation.gd" id="5_d6kcm"]
+[ext_resource type="Script" uid="uid://2fy8m61tbb2o" path="res://Scripts/Screenshot.gd" id="3_iaxo3"]
+[ext_resource type="Shader" uid="uid://bxkrat8b7jic0" path="res://Shaders/JuliaSets.gdshader" id="4_h4nn3"]
+[ext_resource type="Script" uid="uid://7mwytj4mg015" path="res://Scripts/JuliaSetsAnimation.gd" id="5_d6kcm"]
 [ext_resource type="Gradient" uid="uid://bn63wg0mc5xof" path="res://Ressources/JuliaMandelbrotGradient.tres" id="5_thm8b"]
+[ext_resource type="Shader" uid="uid://cqnblr3mmtmjk" path="res://Shaders/Newton.gdshader" id="7_pkxfo"]
+[ext_resource type="Texture2D" uid="uid://dx5eupgsw3wle" path="res://Ressources/Pastel_3_Gradient.tres" id="8_au54f"]
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_0qdkc"]
 gradient = ExtResource("5_thm8b")
@@ -20,6 +22,13 @@ shader_parameter/zoom = 0.2
 shader_parameter/iterations = 75
 shader_parameter/gradient = SubResource("GradientTexture1D_0qdkc")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_au54f"]
+shader = ExtResource("7_pkxfo")
+shader_parameter/iterations = 100
+shader_parameter/gradient = ExtResource("8_au54f")
+shader_parameter/zoom = 2.0
+shader_parameter/roots = PackedVector2Array(1, 0, -0.5, 0.866, -0.5, -0.866)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eoume"]
 bg_color = Color(1, 1, 1, 0.784314)
 
@@ -31,9 +40,9 @@ MarginContainer/constants/margin_right = 10
 MarginContainer/constants/margin_top = 10
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_eoume")
 
-[node name="Fractals" type="Node2D"]
+[node name="Fractals" type="Node2D" unique_id=1808670684]
 
-[node name="Shapes" type="Node2D" parent="."]
+[node name="Shapes" type="Node2D" parent="." unique_id=1520745024]
 visible = false
 script = ExtResource("1_wpswc")
 shape = 3
@@ -42,21 +51,21 @@ KochDepth = 5
 KochColor = Color(0.937255, 0.831373, 1, 1)
 sierpinskiDepth = 7
 
-[node name="Fractals" type="Control" parent="."]
+[node name="Fractals" type="Control" parent="." unique_id=1770586962]
 layout_mode = 3
 anchors_preset = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 metadata/_edit_use_anchors_ = true
 
-[node name="Mandelbrot_rect" type="ColorRect" parent="Fractals"]
+[node name="Mandelbrot_rect" type="ColorRect" parent="Fractals" unique_id=1077240613]
 material = ExtResource("1_bup5k")
 layout_mode = 0
 offset_right = 1000.0
 offset_bottom = 1000.0
 metadata/_edit_use_anchors_ = true
 
-[node name="BurningShip_rect" type="ColorRect" parent="Fractals"]
+[node name="BurningShip_rect" type="ColorRect" parent="Fractals" unique_id=572779066]
 visible = false
 material = ExtResource("3_e6vod")
 layout_mode = 0
@@ -64,7 +73,8 @@ offset_right = 1000.0
 offset_bottom = 1000.0
 metadata/_edit_use_anchors_ = true
 
-[node name="Julia_rect" type="ColorRect" parent="Fractals"]
+[node name="Julia_rect" type="ColorRect" parent="Fractals" unique_id=1520096452]
+visible = false
 material = SubResource("ShaderMaterial_tcxcm")
 layout_mode = 0
 offset_right = 1000.0
@@ -73,7 +83,14 @@ script = ExtResource("5_d6kcm")
 speed = 3.0
 metadata/_edit_use_anchors_ = true
 
-[node name="Controls" type="Control" parent="."]
+[node name="Newton" type="ColorRect" parent="Fractals" unique_id=1200717099]
+material = SubResource("ShaderMaterial_au54f")
+layout_mode = 0
+offset_right = 1000.0
+offset_bottom = 1000.0
+metadata/_edit_use_anchors_ = true
+
+[node name="Controls" type="Control" parent="." unique_id=1907847054]
 visible = false
 layout_mode = 3
 anchors_preset = 15
@@ -84,7 +101,7 @@ offset_bottom = 720.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="Controls"]
+[node name="PanelContainer" type="PanelContainer" parent="Controls" unique_id=2069306550]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.7
@@ -93,17 +110,17 @@ anchor_bottom = 1.0
 grow_vertical = 0
 theme = SubResource("Theme_54jo5")
 
-[node name="MarginContainer" type="MarginContainer" parent="Controls/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Controls/PanelContainer" unique_id=2024202763]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Controls/PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Controls/PanelContainer/MarginContainer" unique_id=774342719]
 layout_mode = 2
 alignment = 1
 
-[node name="HSlider" type="HSlider" parent="Controls/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="HSlider" type="HSlider" parent="Controls/PanelContainer/MarginContainer/VBoxContainer" unique_id=1239905101]
 layout_mode = 2
 
-[node name="Screenshot" type="Node" parent="."]
+[node name="Screenshot" type="Node" parent="." unique_id=1224829559]
 script = ExtResource("3_iaxo3")
 mode = 1
 destinationFolderPath = "res://Screenshots/Test/"

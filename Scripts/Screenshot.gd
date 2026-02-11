@@ -1,3 +1,8 @@
+# ------------------------------------------------------------------------------
+# Screenshot & Sequence Tool for Godot 4.x
+# Developed by: PhilippeZ-Dev
+# License: MIT
+# ------------------------------------------------------------------------------
 class_name Screenshot
 extends Node
 
