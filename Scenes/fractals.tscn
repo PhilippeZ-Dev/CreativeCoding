@@ -4,30 +4,16 @@
 [ext_resource type="Script" uid="uid://44j3dk63ccaq" path="res://Scripts/Shapes.gd" id="1_wpswc"]
 [ext_resource type="Material" uid="uid://b3fdn3v2visgg" path="res://Materials/M_BurnignShip.tres" id="3_e6vod"]
 [ext_resource type="Script" uid="uid://2fy8m61tbb2o" path="res://Scripts/Screenshot.gd" id="3_iaxo3"]
-[ext_resource type="Shader" uid="uid://bxkrat8b7jic0" path="res://Shaders/JuliaSets.gdshader" id="4_h4nn3"]
+[ext_resource type="Material" uid="uid://r62ec82ro2al" path="res://Materials/M_JuliaSets.tres" id="4_k2t27"]
 [ext_resource type="Script" uid="uid://7mwytj4mg015" path="res://Scripts/JuliaSetsAnimation.gd" id="5_d6kcm"]
-[ext_resource type="Gradient" uid="uid://bn63wg0mc5xof" path="res://Ressources/JuliaMandelbrotGradient.tres" id="5_thm8b"]
-[ext_resource type="Shader" uid="uid://cqnblr3mmtmjk" path="res://Shaders/Newton.gdshader" id="7_pkxfo"]
-[ext_resource type="Texture2D" uid="uid://dx5eupgsw3wle" path="res://Ressources/Pastel_3_Gradient.tres" id="8_au54f"]
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_0qdkc"]
-gradient = ExtResource("5_thm8b")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tcxcm"]
-shader = ExtResource("4_h4nn3")
-shader_parameter/isPortrait = false
-shader_parameter/c = Vector2(-0.745, 0.095)
-shader_parameter/offset = Vector2(0, 0)
-shader_parameter/zoom = 0.2
-shader_parameter/iterations = 75
-shader_parameter/gradient = SubResource("GradientTexture1D_0qdkc")
+[ext_resource type="Material" uid="uid://dl1r3lhiime8l" path="res://Materials/M_Newton.tres" id="6_pkxfo"]
+[ext_resource type="Shader" uid="uid://bkrogavnlrjy7" path="res://Shaders/RaymarchingTest.gdshader" id="7_pkxfo"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_au54f"]
 shader = ExtResource("7_pkxfo")
-shader_parameter/iterations = 100
-shader_parameter/gradient = ExtResource("8_au54f")
-shader_parameter/zoom = 2.0
-shader_parameter/roots = PackedVector2Array(1, 0, -0.5, 0.866, -0.5, -0.866)
+shader_parameter/_color = Color(0.75494796, 0.28781706, 0.8749245, 1)
+shader_parameter/_cameraPosition = Vector3(0, 0, -2)
+shader_parameter/_lightPos = Vector3(1.925, 2.875, 1.5)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eoume"]
 bg_color = Color(1, 1, 1, 0.784314)
@@ -59,6 +45,7 @@ size_flags_vertical = 3
 metadata/_edit_use_anchors_ = true
 
 [node name="Mandelbrot_rect" type="ColorRect" parent="Fractals" unique_id=1077240613]
+visible = false
 material = ExtResource("1_bup5k")
 layout_mode = 0
 offset_right = 1000.0
@@ -75,7 +62,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Julia_rect" type="ColorRect" parent="Fractals" unique_id=1520096452]
 visible = false
-material = SubResource("ShaderMaterial_tcxcm")
+material = ExtResource("4_k2t27")
 layout_mode = 0
 offset_right = 1000.0
 offset_bottom = 1000.0
@@ -84,6 +71,13 @@ speed = 3.0
 metadata/_edit_use_anchors_ = true
 
 [node name="Newton" type="ColorRect" parent="Fractals" unique_id=1200717099]
+material = ExtResource("6_pkxfo")
+layout_mode = 0
+offset_right = 1000.0
+offset_bottom = 1000.0
+metadata/_edit_use_anchors_ = true
+
+[node name="RayMarching" type="ColorRect" parent="Fractals" unique_id=1889117300]
 material = SubResource("ShaderMaterial_au54f")
 layout_mode = 0
 offset_right = 1000.0
