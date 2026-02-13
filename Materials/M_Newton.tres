@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dl1r3lhiime8l"]
+
+[ext_resource type="Shader" uid="uid://cqnblr3mmtmjk" path="res://Shaders/Newton.gdshader" id="1_5o55m"]
+[ext_resource type="Texture2D" uid="uid://dx5eupgsw3wle" path="res://Ressources/Pastel_3_Gradient.tres" id="2_bd4vl"]
+
+[resource]
+shader = ExtResource("1_5o55m")
+shader_parameter/iterations = 100
+shader_parameter/gradient = ExtResource("2_bd4vl")
+shader_parameter/zoom = 10.0
+shader_parameter/speed = 0.5
+shader_parameter/rotation = 0.0
+shader_parameter/rotationSpeed = 0.0
+shader_parameter/roots = PackedVector2Array(-0.5, 0.866, 1, 0, -0.5, -0.866)

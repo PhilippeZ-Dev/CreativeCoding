@@ -1,0 +1,16 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://r62ec82ro2al"]
+
+[ext_resource type="Shader" uid="uid://bxkrat8b7jic0" path="res://Shaders/JuliaSets.gdshader" id="1_1fyvb"]
+[ext_resource type="Gradient" uid="uid://bn63wg0mc5xof" path="res://Ressources/JuliaMandelbrotGradient.tres" id="2_vhw2s"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_0qdkc"]
+gradient = ExtResource("2_vhw2s")
+
+[resource]
+shader = ExtResource("1_1fyvb")
+shader_parameter/isPortrait = false
+shader_parameter/c = Vector2(-0.745, 0.095)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/zoom = 0.2
+shader_parameter/iterations = 75
+shader_parameter/gradient = SubResource("GradientTexture1D_0qdkc")
