@@ -11,9 +11,12 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_au54f"]
 shader = ExtResource("7_pkxfo")
-shader_parameter/_color = Color(0.75494796, 0.28781706, 0.8749245, 1)
-shader_parameter/_cameraPosition = Vector3(0, 0, -2)
+shader_parameter/_color = Color(0.9098039, 0.33333334, 0.37254903, 1)
+shader_parameter/_cameraPosition = Vector3(0, 0, -2.515)
+shader_parameter/_cameraRotation = Vector3(0, 0.01, 0)
 shader_parameter/_lightPos = Vector3(1.925, 2.875, 1.5)
+shader_parameter/_shapeLerp = 0.5
+shader_parameter/_timeScale = 0.1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eoume"]
 bg_color = Color(1, 1, 1, 0.784314)

@@ -1,51 +1,76 @@
+/********************************************************************
+*	SOURCES:														*
+*		michaelwalczyk.com/blog-ray-marching.html					*
+*		https://iquilezles.org/articles/distfunctions/				*
+*********************************************************************/
+
 shader_type canvas_item;
-
-struct Sphere
-{
-	vec3 center;
-	float radius;
-};
-
-Sphere MakeSphere(vec3 center, float radius)
-{
-	Sphere sphere;
-	sphere.center  = center;
-	sphere.radius = radius;
-	return sphere;
-}
 
 uniform vec3 _color : source_color = vec3(1.0,0.0,0.0);
 uniform vec3 _cameraPosition = vec3(0.0,0.0,-5.0);
+uniform vec3 _cameraRotation = vec3(0.0);
 uniform vec3 _lightPos = vec3(2.0, -5.0, 3.0);
+
+uniform float _shapeLerp : hint_range(0.0, 1.0) = 0.5;
+uniform float _timeScale = .5;
+
+mat2 Rotate(float angle)
+{
+	float s = sin(angle);
+	float c = cos(angle);
+	return mat2(vec2(c, -s), vec2(s,c));
+}
+
+vec3 ApplyCameraRotation(vec3 rayDir, vec3 rotation)
+{
+	vec3 rd = rayDir;
+	rd.xy *= Rotate(rotation.z);
+	rd.yz *= Rotate(rotation.x);
+	rd.xz *= Rotate(rotation.y);
+	
+	return rd;
+}
+
+float MixShapes(float a, float b, float m)
+{
+	return mix(a, b, m);
+}
 
 // p: point in space
 // c: center of sphere
 // r: radius of sphere
-float _DistanceFromSphere(vec3 p, vec3 c, float r)
+float DistanceFromSphere(vec3 p, vec3 c, float r)
 {
 	return length(p-c)-r;
 }
 
-float DistanceFromSphere(vec3 p, Sphere s)
+float sdBox(vec3 p, vec3 b)
 {
-	return length(p-s.center)-s.radius;
+	vec3 q = abs(p) - b;
+	return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
 }
 
-float MapTheWorld(vec3 pos)
+float MapScene(vec3 pos)
 {
-	float sphere_0 = _DistanceFromSphere(pos,  vec3(0), 1);
+	float displacement = cos(TIME )*.1 + sin(5.0*pos.x) * sin(5.0*pos.y) * sin(5.0*pos.z) * 0.25;	
 	
-	// add other spheres
+	float sphere_0 = DistanceFromSphere(pos,  vec3(0), 1);
+	float box_0 = sdBox(pos, vec3(.5));
 	
-	return sphere_0;
+	float time = (cos(TIME) *2.0 -1.0) * _timeScale;
+	float shape = MixShapes(sphere_0, box_0, _shapeLerp);
+	
+	return shape;
+	//return box_0;
+	//return sphere_0;// + displacement;
 }
 
 vec3 CalculateNormal(vec3 p)
 {
 	const vec3 smallStep = vec3(0.001, 0.0, 0.0);
-	float gradient_x = MapTheWorld(p + smallStep.xyy) - MapTheWorld(p - smallStep.xyy);
-	float gradient_y =  MapTheWorld(p + smallStep.yxy) - MapTheWorld(p - smallStep.yxy);
-	float gradient_z =  MapTheWorld(p + smallStep.yyx) - MapTheWorld(p - smallStep.yyx);
+	float gradient_x = MapScene(p + smallStep.xyy) - MapScene(p - smallStep.xyy);
+	float gradient_y = MapScene(p + smallStep.yxy) - MapScene(p - smallStep.yxy);
+	float gradient_z = MapScene(p + smallStep.yyx) - MapScene(p - smallStep.yyx);
 	
 	vec3 normal = vec3(gradient_x, gradient_y, gradient_z);
 	
@@ -71,8 +96,8 @@ vec3 RayMarch(vec3 ro, vec3 rd)
 		vec3 currentPos = ro + totaldistanceTraveled * rd;
 		
 		// we assume that the sphere is centered at the origin and the radius is 1
-		//float distanceToClosest = _DistanceFromSphere(currentPos, vec3(0), 1.0);
-		float distanceToClosest = MapTheWorld(currentPos);
+		//float distanceToClosest = DistanceFromSphere(currentPos, vec3(0), 1.0);
+		float distanceToClosest = MapScene(currentPos);
 		
 		if(distanceToClosest < MinimumHitDistance)
 		{
@@ -99,8 +124,9 @@ void fragment()
 	vec2 uv = UV *2.0 -1.0;
 	
 	vec3 cameraPosition = _cameraPosition;
-	vec3 ro = cameraPosition;
-	vec3 rd = vec3(uv,1.0);
+	vec3 ro = cameraPosition;	// ray origin
+	vec3 rd = normalize(vec3(uv,1.0));		// ray direction
+	rd = ApplyCameraRotation(rd, _cameraRotation);
 	
 	vec3 shadedRay = RayMarch(ro, rd);
 	
