@@ -46,7 +46,8 @@ vec3 ApplyCameraRotation(vec3 rayDir, vec3 rotation)
 
 float MixShapes(float a, float b, float m)
 {
-	return mix(a, b, m);
+	float time = (cos(TIME * _timeScale*2.0)+1.0)/2.0;
+	return mix(a, b, time);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // p: point in space
@@ -63,39 +64,36 @@ float sdBox(vec3 p, vec3 b)
 	return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
 }
 
-float sdBoxFrame( vec3 p, vec3 b, float e )
-{
-       p = abs(p  )-b;
-  vec3 q = abs(p+e)-e;
-  return min(min(
-      length(max(vec3(p.x,q.y,q.z),0.0))+min(max(p.x,max(q.y,q.z)),0.0),
-      length(max(vec3(q.x,p.y,q.z),0.0))+min(max(q.x,max(p.y,q.z)),0.0)),
-      length(max(vec3(q.x,q.y,p.z),0.0))+min(max(q.x,max(q.y,p.z)),0.0));
-}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 float MapScene(vec3 pos)
 {
 	// rotate all the shapes according to a rotation uniform
-	pos.xz *= Rotate(_shapeRotation.y);
-    pos.yz *= Rotate(_shapeRotation.x);
-    pos.xy *= Rotate(_shapeRotation.z);
+	vec3 shapeRotation = _shapeRotation;
+	shapeRotation.y += mod(TIME*_timeScale, 6.283185);
+	
+	pos.xz *= Rotate(shapeRotation.y);
+    pos.yz *= Rotate(shapeRotation.x);
+    pos.xy *= Rotate(shapeRotation.z);
 	
 	float displacement = cos(TIME )*.1 + sin(5.0*pos.x) * sin(5.0*pos.y) * sin(5.0*pos.z) * 0.25;	
 	
 	float sphere_0 = sdSphere(pos,  vec3(0), 1);
 	float box_0 = sdBox(pos, vec3(.5));
-	float boxFrame_0 = sdBoxFrame(pos, vec3(.5), .05);
 	
 	float time = (cos(TIME) *2.0 -1.0) * _timeScale;
 	float shape = MixShapes(sphere_0, box_0, _shapeLerp);
 	
-	//return box_0;
 	return shape;
 	//return sphere_0;// + displacement;
 }
 
 vec3 GetShapeColor()
 {
+	//float time = (cos(TIME)+1.0)/2.0 * _timeScale;
+	
+	//vec3 gradient = texture(_gradient, vec2(fract(TIME * _timeScale), 0)).xyz;
+	//return gradient;
+	
 	return _color;
 }
 

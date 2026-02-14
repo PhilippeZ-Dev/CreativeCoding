@@ -21,11 +21,11 @@ shader_parameter/_gradient = SubResource("GradientTexture1D_au54f")
 shader_parameter/_cameraPosition = Vector3(0, 0, -2.515)
 shader_parameter/_cameraRotation = Vector3(0, 0.01, 0)
 shader_parameter/_lightStrength = 1.0
-shader_parameter/_lightPos = Vector3(1.925, 2.875, 1.5)
+shader_parameter/_lightPos = Vector3(2, 3, 5)
 shader_parameter/_lightColor = Color(1, 1, 1, 1)
 shader_parameter/_shapeRotation = Vector3(0, 0, 0)
 shader_parameter/_shapeLerp = 0.0
-shader_parameter/_timeScale = 0.1
+shader_parameter/_timeScale = 1.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eoume"]
 bg_color = Color(1, 1, 1, 0.784314)
