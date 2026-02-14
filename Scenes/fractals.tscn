@@ -8,14 +8,23 @@
 [ext_resource type="Script" uid="uid://7mwytj4mg015" path="res://Scripts/JuliaSetsAnimation.gd" id="5_d6kcm"]
 [ext_resource type="Material" uid="uid://dl1r3lhiime8l" path="res://Materials/M_Newton.tres" id="6_pkxfo"]
 [ext_resource type="Shader" uid="uid://bkrogavnlrjy7" path="res://Shaders/RaymarchingTest.gdshader" id="7_pkxfo"]
+[ext_resource type="Gradient" uid="uid://bp070n6kcplfu" path="res://Ressources/Rainbow_Gradient.tres" id="8_au54f"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_au54f"]
+gradient = ExtResource("8_au54f")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_au54f"]
 shader = ExtResource("7_pkxfo")
-shader_parameter/_color = Color(0.9098039, 0.33333334, 0.37254903, 1)
+shader_parameter/_color = Color(0.91, 0.333, 0.373, 1)
+shader_parameter/_backgroundColor = Color(0, 0, 0, 1)
+shader_parameter/_gradient = SubResource("GradientTexture1D_au54f")
 shader_parameter/_cameraPosition = Vector3(0, 0, -2.515)
 shader_parameter/_cameraRotation = Vector3(0, 0.01, 0)
+shader_parameter/_lightStrength = 1.0
 shader_parameter/_lightPos = Vector3(1.925, 2.875, 1.5)
-shader_parameter/_shapeLerp = 0.5
+shader_parameter/_lightColor = Color(1, 1, 1, 1)
+shader_parameter/_shapeRotation = Vector3(0, 0, 0)
+shader_parameter/_shapeLerp = 0.0
 shader_parameter/_timeScale = 0.1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eoume"]
