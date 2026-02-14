@@ -15,17 +15,22 @@ gradient = ExtResource("8_au54f")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_au54f"]
 shader = ExtResource("7_pkxfo")
-shader_parameter/_color = Color(0.91, 0.333, 0.373, 1)
-shader_parameter/_backgroundColor = Color(0, 0, 0, 1)
+shader_parameter/_color = Color(0.9950066, 0, 0.25434855, 1)
+shader_parameter/_backgroundColor = Color(1, 0.8574127, 0.5972796, 1)
 shader_parameter/_gradient = SubResource("GradientTexture1D_au54f")
-shader_parameter/_cameraPosition = Vector3(0, 0, -2.515)
-shader_parameter/_cameraRotation = Vector3(0, 0.01, 0)
-shader_parameter/_lightStrength = 1.0
-shader_parameter/_lightPos = Vector3(2, 3, 5)
+shader_parameter/_cameraPosition = Vector3(0, 0, -4.5)
+shader_parameter/_cameraRotation = Vector3(0, 0, 0)
+shader_parameter/_lightStrength = 1.355
+shader_parameter/_lightPos = Vector3(2, 0, -3)
 shader_parameter/_lightColor = Color(1, 1, 1, 1)
+shader_parameter/_minShadowLevel = 0.70000003325
 shader_parameter/_shapeRotation = Vector3(0, 0, 0)
-shader_parameter/_shapeLerp = 0.0
-shader_parameter/_timeScale = 1.0
+shader_parameter/_shapeLerp = 1.0
+shader_parameter/_h_radius = 2.0
+shader_parameter/_h_expansion = 0.3
+shader_parameter/_h_Z_scale = 1.5
+shader_parameter/_h_compression = 1.0
+shader_parameter/_timeScale = 0.5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eoume"]
 bg_color = Color(1, 1, 1, 0.784314)
@@ -129,5 +134,5 @@ layout_mode = 2
 [node name="Screenshot" type="Node" parent="." unique_id=1224829559]
 script = ExtResource("3_iaxo3")
 mode = 1
-destinationFolderPath = "res://Screenshots/Test/"
+destinationFolderPath = "res://Screenshots/Heart/"
 screenshotName = "test"

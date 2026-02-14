@@ -19,10 +19,20 @@ group_uniforms Light;
 uniform float _lightStrength = 1.0;
 uniform vec3 _lightPos = vec3(2.0, -5.0, 3.0);
 uniform vec3 _lightColor : source_color = vec3(1.0);
+uniform float _minShadowLevel : hint_range(0.0, 1.0) = 0.0;
+
+
 
 group_uniforms Shape_Transform;
 uniform vec3 _shapeRotation = vec3(0);
 uniform float _shapeLerp : hint_range(0.0, 1.0) = 0.5;
+
+group_uniforms Heart;
+uniform float _h_radius = 2.0;
+uniform float _h_expansion = 0.2;
+uniform float _h_Z_scale = 1.0;
+
+uniform float _h_compression = 1.0;
 
 group_uniforms Animation;
 uniform float _timeScale = .5;
@@ -46,8 +56,19 @@ vec3 ApplyCameraRotation(vec3 rayDir, vec3 rotation)
 
 float MixShapes(float a, float b, float m)
 {
-	float time = (cos(TIME * _timeScale*2.0)+1.0)/2.0;
-	return mix(a, b, time);
+	//float time = (cos(TIME * _timeScale*2.0)+1.0)/2.0;
+	//return mix(a, b, time);
+	
+	return mix(a, b, m);
+}
+
+float AlmostIdentity( float x, float m, float e ) // https://iquilezles.org/articles/functions/
+{
+	if( x>m ) return x;
+	float a = 2.0*e - m;
+	float b = 2.0*m - 3.0*e;
+	float t = x/m;
+	return (a*t+b)*t*t + e;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // p: point in space
@@ -64,6 +85,20 @@ float sdBox(vec3 p, vec3 b)
 	return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
 }
 
+float sdHeart(vec3 p, vec3 c, float r)
+{
+	float radius = r + _h_expansion * pow(0.5 + 0.5* sin(2.0 * PI * TIME + (p.y/25.0)),4.0);
+	
+	vec3 point = p;
+	float x = abs(p.x);
+	x = AlmostIdentity(x, 0.5, 0.01);
+	//point.z = p.z * (2.0 - (p.y / 15.0));
+	point.z = p.z * _h_Z_scale;
+	point.y = _h_compression * point.y + abs(x) * sqrt((20.0 - abs(x))/35.0);
+	
+	return length(point-c)-radius;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 float MapScene(vec3 pos)
 {
@@ -75,13 +110,15 @@ float MapScene(vec3 pos)
     pos.yz *= Rotate(shapeRotation.x);
     pos.xy *= Rotate(shapeRotation.z);
 	
-	float displacement = cos(TIME )*.1 + sin(5.0*pos.x) * sin(5.0*pos.y) * sin(5.0*pos.z) * 0.25;	
+	float heart_0 = sdHeart(pos, vec3(0), _h_radius);
+	//return heart_0;
 	
-	float sphere_0 = sdSphere(pos,  vec3(0), 1);
-	float box_0 = sdBox(pos, vec3(.5));
+	//float displacement = cos(TIME )*.1 + sin(5.0*pos.x) * sin(5.0*pos.y) * sin(5.0*pos.z) * 0.25;	
+	float sphere_0 = sdSphere(pos,  vec3(0), _h_radius);
+	//float box_0 = sdBox(pos, vec3(.5));
 	
-	float time = (cos(TIME) *2.0 -1.0) * _timeScale;
-	float shape = MixShapes(sphere_0, box_0, _shapeLerp);
+	//float time = (cos(TIME) *2.0 -1.0) * _timeScale;
+	float shape = MixShapes(sphere_0, heart_0, _shapeLerp);
 	
 	return shape;
 	//return sphere_0;// + displacement;
@@ -90,8 +127,8 @@ float MapScene(vec3 pos)
 vec3 GetShapeColor()
 {
 	//float time = (cos(TIME)+1.0)/2.0 * _timeScale;
-	
-	//vec3 gradient = texture(_gradient, vec2(fract(TIME * _timeScale), 0)).xyz;
+	//
+	//vec3 gradient = texture(_gradient, vec2(fract(TIME /5.0), 0)).xyz;
 	//return gradient;
 	
 	return _color;
@@ -112,7 +149,7 @@ vec3 CalculateNormal(vec3 p)
 float CalculateLightIntensity(vec3 pos, vec3 norm)
 {
 	vec3 directionToLight = normalize(pos - _lightPos);
-	return max(0, dot(norm, directionToLight));
+	return max(_minShadowLevel, dot(norm, directionToLight));
 }
 
 vec3 RayMarch(vec3 ro, vec3 rd)
@@ -120,7 +157,7 @@ vec3 RayMarch(vec3 ro, vec3 rd)
 	float totaldistanceTraveled = 0.0;
 	const int NumberOfSteps = 32;
 	const float MinimumHitDistance = .001;
-	const float MaximumTraceDistance = 1000.0;
+	const float MaximumTraceDistance = 10000.0;
 	
 	for(int i = 0; i < NumberOfSteps; ++i)
 	{
@@ -136,6 +173,7 @@ vec3 RayMarch(vec3 ro, vec3 rd)
 			// return color if we hit something
 			vec3 normal = CalculateNormal(currentPos);
 			
+			//return GetShapeColor();// * CalculateLightIntensity(currentPos, normal);
 			return GetShapeColor() * CalculateLightIntensity(currentPos, normal);
 		}
 		
