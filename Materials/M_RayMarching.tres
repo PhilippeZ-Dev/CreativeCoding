@@ -1,0 +1,26 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bqs6bx71xenq5"]
+
+[ext_resource type="Shader" uid="uid://bkrogavnlrjy7" path="res://Shaders/RaymarchingTest.gdshader" id="1_gm6fj"]
+[ext_resource type="Gradient" uid="uid://bp070n6kcplfu" path="res://Ressources/Rainbow_Gradient.tres" id="2_dae33"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_au54f"]
+gradient = ExtResource("2_dae33")
+
+[resource]
+shader = ExtResource("1_gm6fj")
+shader_parameter/_color = Color(0.9950066, 0, 0.25434855, 1)
+shader_parameter/_backgroundColor = Color(1, 0.8574127, 0.5972796, 1)
+shader_parameter/_gradient = SubResource("GradientTexture1D_au54f")
+shader_parameter/_cameraPosition = Vector3(0, 0, -4.5)
+shader_parameter/_cameraRotation = Vector3(0, 0, 0)
+shader_parameter/_lightStrength = 1.355
+shader_parameter/_lightPos = Vector3(2, 0, -3)
+shader_parameter/_lightColor = Color(1, 1, 1, 1)
+shader_parameter/_minShadowLevel = 0.70000003325
+shader_parameter/_shapeRotation = Vector3(0, 0, 0)
+shader_parameter/_shapeLerp = 0.0
+shader_parameter/_h_radius = 2.0
+shader_parameter/_h_expansion = 0.3
+shader_parameter/_h_Z_scale = 1.5
+shader_parameter/_h_compression = 1.0
+shader_parameter/_timeScale = 0.5
