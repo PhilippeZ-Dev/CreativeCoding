@@ -56,24 +56,20 @@ vec3 ApplyCameraRotation(vec3 rayDir, vec3 rotation)
 
 float MixShapes(float a, float b, float m)
 {
-	//float time = (cos(TIME * _timeScale*2.0)+1.0)/2.0;
-	//return mix(a, b, time);
-	
 	return mix(a, b, m);
 }
 
+// used to smoth the lighting
 float AlmostIdentity( float x, float m, float e ) // https://iquilezles.org/articles/functions/
 {
-	if( x>m ) return x;
+	if(x>m) return x;
 	float a = 2.0*e - m;
 	float b = 2.0*m - 3.0*e;
 	float t = x/m;
 	return (a*t+b)*t*t + e;
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// p: point in space
-// c: center of sphere
-// r: radius of sphere
+
+// p: point in space | c: center of sphere | r: radius of sphere
 float sdSphere(vec3 p, vec3 c, float r)
 {
 	return length(p-c)-r;
@@ -88,18 +84,14 @@ float sdBox(vec3 p, vec3 b)
 float sdHeart(vec3 p, vec3 c, float r)
 {
 	float radius = r + _h_expansion * pow(0.5 + 0.5* sin(2.0 * PI * TIME + (p.y/25.0)),4.0);
-	
 	vec3 point = p;
 	float x = abs(p.x);
 	x = AlmostIdentity(x, 0.5, 0.01);
-	//point.z = p.z * (2.0 - (p.y / 15.0));
 	point.z = p.z * _h_Z_scale;
 	point.y = _h_compression * point.y + abs(x) * sqrt((20.0 - abs(x))/35.0);
-	
 	return length(point-c)-radius;
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
 float MapScene(vec3 pos)
 {
 	// rotate all the shapes according to a rotation uniform
@@ -107,30 +99,22 @@ float MapScene(vec3 pos)
 	shapeRotation.y += mod(TIME*_timeScale, 6.283185);
 	
 	pos.xz *= Rotate(shapeRotation.y);
-    pos.yz *= Rotate(shapeRotation.x);
-    pos.xy *= Rotate(shapeRotation.z);
+	pos.yz *= Rotate(shapeRotation.x);
+	pos.xy *= Rotate(shapeRotation.z);
 	
 	float heart_0 = sdHeart(pos, vec3(0), _h_radius);
-	//return heart_0;
 	
-	//float displacement = cos(TIME )*.1 + sin(5.0*pos.x) * sin(5.0*pos.y) * sin(5.0*pos.z) * 0.25;	
+	//float displacement = cos(TIME )*.1 + sin(5.0*pos.x) * sin(5.0*pos.y) * sin(5.0*pos.z) * 0.25;
+	
 	float sphere_0 = sdSphere(pos,  vec3(0), _h_radius);
 	//float box_0 = sdBox(pos, vec3(.5));
 	
-	//float time = (cos(TIME) *2.0 -1.0) * _timeScale;
 	float shape = MixShapes(sphere_0, heart_0, _shapeLerp);
-	
 	return shape;
-	//return sphere_0;// + displacement;
 }
 
 vec3 GetShapeColor()
 {
-	//float time = (cos(TIME)+1.0)/2.0 * _timeScale;
-	//
-	//vec3 gradient = texture(_gradient, vec2(fract(TIME /5.0), 0)).xyz;
-	//return gradient;
-	
 	return _color;
 }
 
@@ -164,16 +148,12 @@ vec3 RayMarch(vec3 ro, vec3 rd)
 		// calculate current position along ray
 		vec3 currentPos = ro + totaldistanceTraveled * rd;
 		
-		// we assume that the sphere is centered at the origin and the radius is 1
-		//float distanceToClosest = DistanceFromSphere(currentPos, vec3(0), 1.0);
 		float distanceToClosest = MapScene(currentPos);
 		
 		if(distanceToClosest < MinimumHitDistance)
 		{
 			// return color if we hit something
 			vec3 normal = CalculateNormal(currentPos);
-			
-			//return GetShapeColor();// * CalculateLightIntensity(currentPos, normal);
 			return GetShapeColor() * CalculateLightIntensity(currentPos, normal);
 		}
 		
@@ -185,7 +165,6 @@ vec3 RayMarch(vec3 ro, vec3 rd)
 		// accumulate the distance traveled
 		totaldistanceTraveled += distanceToClosest;
 	}
-	
 	// if we got here, we hit nothing and return the backgroundcolor
 	return _backgroundColor;
 }
