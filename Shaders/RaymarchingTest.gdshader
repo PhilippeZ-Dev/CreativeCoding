@@ -6,6 +6,9 @@
 
 shader_type canvas_item;
 
+#include "ShaderIncludes/MathUtils.gdshaderinc"
+#include "ShaderIncludes/ShapeSDFs.gdshaderinc"
+
 group_uniforms Color;
 uniform vec3 _color : source_color = vec3(0.91, 0.333, 0.373);
 uniform vec3 _backgroundColor : source_color = vec3(0);
@@ -37,60 +40,13 @@ uniform float _h_compression = 1.0;
 group_uniforms Animation;
 uniform float _timeScale = .5;
 
-mat2 Rotate(float angle)
-{
-	float s = sin(angle);
-	float c = cos(angle);
-	return mat2(vec2(c, -s), vec2(s,c));
-}
-
-vec3 ApplyCameraRotation(vec3 rayDir, vec3 rotation)
-{
-	vec3 rd = rayDir;
-	rd.xy *= Rotate(rotation.z);
-	rd.yz *= Rotate(rotation.x);
-	rd.xz *= Rotate(rotation.y);
-	
-	return rd;
-}
 
 float MixShapes(float a, float b, float m)
 {
 	return mix(a, b, m);
 }
 
-// used to smoth the lighting
-float AlmostIdentity( float x, float m, float e ) // https://iquilezles.org/articles/functions/
-{
-	if(x>m) return x;
-	float a = 2.0*e - m;
-	float b = 2.0*m - 3.0*e;
-	float t = x/m;
-	return (a*t+b)*t*t + e;
-}
 
-// p: point in space | c: center of sphere | r: radius of sphere
-float sdSphere(vec3 p, vec3 c, float r)
-{
-	return length(p-c)-r;
-}
-
-float sdBox(vec3 p, vec3 b)
-{
-	vec3 q = abs(p) - b;
-	return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
-}
-
-float sdHeart(vec3 p, vec3 c, float r)
-{
-	float radius = r + _h_expansion * pow(0.5 + 0.5* sin(2.0 * PI * TIME + (p.y/25.0)),4.0);
-	vec3 point = p;
-	float x = abs(p.x);
-	x = AlmostIdentity(x, 0.5, 0.01);
-	point.z = p.z * _h_Z_scale;
-	point.y = _h_compression * point.y + abs(x) * sqrt((20.0 - abs(x))/35.0);
-	return length(point-c)-radius;
-}
 
 float MapScene(vec3 pos)
 {
@@ -102,7 +58,7 @@ float MapScene(vec3 pos)
 	pos.yz *= Rotate(shapeRotation.x);
 	pos.xy *= Rotate(shapeRotation.z);
 	
-	float heart_0 = sdHeart(pos, vec3(0), _h_radius);
+	float heart_0 = sdHeart(pos, vec3(0), _h_radius, _h_expansion, _h_Z_scale);
 	
 	//float displacement = cos(TIME )*.1 + sin(5.0*pos.x) * sin(5.0*pos.y) * sin(5.0*pos.z) * 0.25;
 	
@@ -118,6 +74,8 @@ vec3 GetShapeColor()
 	return _color;
 }
 
+
+// LIGHTING
 vec3 CalculateNormal(vec3 p)
 {
 	const vec3 smallStep = vec3(0.001, 0.0, 0.0);
@@ -135,6 +93,7 @@ float CalculateLightIntensity(vec3 pos, vec3 norm)
 	vec3 directionToLight = normalize(pos - _lightPos);
 	return max(_minShadowLevel, dot(norm, directionToLight));
 }
+//////////////
 
 vec3 RayMarch(vec3 ro, vec3 rd)
 {
