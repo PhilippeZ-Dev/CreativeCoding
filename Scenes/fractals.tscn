@@ -8,17 +8,23 @@
 [ext_resource type="Script" uid="uid://7mwytj4mg015" path="res://Scripts/JuliaSetsAnimation.gd" id="5_d6kcm"]
 [ext_resource type="Material" uid="uid://dl1r3lhiime8l" path="res://Materials/M_Newton.tres" id="6_pkxfo"]
 [ext_resource type="Material" uid="uid://bqs6bx71xenq5" path="res://Materials/M_RayMarching.tres" id="7_pkxfo"]
+[ext_resource type="Script" uid="uid://dng1j0tt2vwmi" path="res://Scripts/UI_controls/UItoMandelbrot.gd" id="8_au54f"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eoume"]
 bg_color = Color(1, 1, 1, 0.784314)
 
 [sub_resource type="Theme" id="Theme_54jo5"]
 Label/colors/font_color = Color(0, 0, 0, 1)
+Label/font_sizes/font_size = 25
 MarginContainer/constants/margin_bottom = 10
 MarginContainer/constants/margin_left = 10
 MarginContainer/constants/margin_right = 10
 MarginContainer/constants/margin_top = 10
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_eoume")
+
+[sub_resource type="LabelSettings" id="LabelSettings_pkxfo"]
+font_size = 30
+font_color = Color(0, 0, 0, 1)
 
 [node name="Fractals" type="Node2D" unique_id=1808670684]
 
@@ -80,34 +86,106 @@ offset_bottom = 1000.0
 metadata/_edit_use_anchors_ = true
 
 [node name="Controls" type="Control" parent="." unique_id=1907847054]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 720.0
-offset_bottom = 720.0
+offset_right = 500.0
+offset_bottom = 1000.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="Controls" unique_id=2069306550]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.7
-anchor_right = 0.3
-anchor_bottom = 1.0
+anchor_top = 0.05
+anchor_right = 0.5
+anchor_bottom = 0.25
 grow_vertical = 0
 theme = SubResource("Theme_54jo5")
 
 [node name="MarginContainer" type="MarginContainer" parent="Controls/PanelContainer" unique_id=2024202763]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Controls/PanelContainer/MarginContainer" unique_id=774342719]
+[node name="Mandelbrot_Set" type="VBoxContainer" parent="Controls/PanelContainer/MarginContainer" unique_id=774342719]
+material = ExtResource("1_bup5k")
+layout_mode = 2
+script = ExtResource("8_au54f")
+material = ExtResource("1_bup5k")
+u_zoom = "zoom"
+u_offset = "offset"
+u_iterations = "iterations"
+
+[node name="Title_Mandelbrot" type="Label" parent="Controls/PanelContainer/MarginContainer/Mandelbrot_Set" unique_id=1372482392]
+layout_mode = 2
+text = "Mandelbrot Set:"
+label_settings = SubResource("LabelSettings_pkxfo")
+
+[node name="Offset" type="HBoxContainer" parent="Controls/PanelContainer/MarginContainer/Mandelbrot_Set" unique_id=676616387]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="t_Offset" type="Label" parent="Controls/PanelContainer/MarginContainer/Mandelbrot_Set/Offset" unique_id=1536757918]
+layout_mode = 2
+text = "Offset:"
+
+[node name="Vector2" type="HBoxContainer" parent="Controls/PanelContainer/MarginContainer/Mandelbrot_Set/Offset" unique_id=380374188]
 layout_mode = 2
 alignment = 1
 
-[node name="HSlider" type="HSlider" parent="Controls/PanelContainer/MarginContainer/VBoxContainer" unique_id=1239905101]
+[node name="X_offset" type="SpinBox" parent="Controls/PanelContainer/MarginContainer/Mandelbrot_Set/Offset/Vector2" unique_id=460218145]
 layout_mode = 2
+min_value = -20.0
+max_value = 20.0
+step = 0.005
+value = -0.745000000000001
+alignment = 1
+
+[node name="Y_offset" type="SpinBox" parent="Controls/PanelContainer/MarginContainer/Mandelbrot_Set/Offset/Vector2" unique_id=139782160]
+layout_mode = 2
+min_value = -20.0
+max_value = 20.0
+step = 0.005
+value = 0.10000000000000142
+alignment = 1
+
+[node name="Zoom" type="HBoxContainer" parent="Controls/PanelContainer/MarginContainer/Mandelbrot_Set" unique_id=572336615]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="t_Zoom" type="Label" parent="Controls/PanelContainer/MarginContainer/Mandelbrot_Set/Zoom" unique_id=1819134582]
+layout_mode = 2
+text = "Zoom:"
+
+[node name="v_Zoom" type="SpinBox" parent="Controls/PanelContainer/MarginContainer/Mandelbrot_Set/Zoom" unique_id=1875287508]
+layout_mode = 2
+min_value = -0.8
+max_value = 1000.0
+step = 0.1
+value = 12.0
+allow_greater = true
+allow_lesser = true
+alignment = 1
+update_on_text_changed = true
+custom_arrow_step = 0.1
+
+[node name="Iterations" type="HBoxContainer" parent="Controls/PanelContainer/MarginContainer/Mandelbrot_Set" unique_id=622958231]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="t_Iterations" type="Label" parent="Controls/PanelContainer/MarginContainer/Mandelbrot_Set/Iterations" unique_id=1428377062]
+layout_mode = 2
+text = "Iterations:"
+
+[node name="v_Iterations" type="SpinBox" parent="Controls/PanelContainer/MarginContainer/Mandelbrot_Set/Iterations" unique_id=1704081802]
+layout_mode = 2
+min_value = 1.0
+max_value = 1000.0
+value = 200.0
+allow_greater = true
+allow_lesser = true
+alignment = 1
+update_on_text_changed = true
 
 [node name="Screenshot" type="Node" parent="." unique_id=1224829559]
 script = ExtResource("3_iaxo3")
@@ -115,3 +193,8 @@ mode = 1
 sequenceLength = 800
 destinationFolderPath = "res://Screenshots/Heart/"
 screenshotName = "heart"
+
+[connection signal="value_changed" from="Controls/PanelContainer/MarginContainer/Mandelbrot_Set/Offset/Vector2/X_offset" to="Controls/PanelContainer/MarginContainer/Mandelbrot_Set" method="_on_x_offset_value_changed"]
+[connection signal="value_changed" from="Controls/PanelContainer/MarginContainer/Mandelbrot_Set/Offset/Vector2/Y_offset" to="Controls/PanelContainer/MarginContainer/Mandelbrot_Set" method="_on_y_offset_value_changed"]
+[connection signal="value_changed" from="Controls/PanelContainer/MarginContainer/Mandelbrot_Set/Zoom/v_Zoom" to="Controls/PanelContainer/MarginContainer/Mandelbrot_Set" method="_on_v_zoom_value_changed"]
+[connection signal="value_changed" from="Controls/PanelContainer/MarginContainer/Mandelbrot_Set/Iterations/v_Iterations" to="Controls/PanelContainer/MarginContainer/Mandelbrot_Set" method="_on_v_iterations_value_changed"]
