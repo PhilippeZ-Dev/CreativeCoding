@@ -24,23 +24,21 @@ void fragment()
 	float aspect_ratio = SCREEN_PIXEL_SIZE.x / SCREEN_PIXEL_SIZE.y;
 	
 	float zoomIn = 0.0;
-	zoomIn = zoom + (pow(TIME, zoomSpeed));
+	zoomIn = zoom + pow(TIME, zoomSpeed);
 	
 	//vec2 uv = (UV - 0.5) * vec2(1.5, 1.0) / zoomIn + offset;
 	
 	vec2 adjustedUV = (UV - 0.5);
-    adjustedUV.y *= aspect_ratio;
+	adjustedUV.y *= aspect_ratio;
 	vec2 adjustedOffset = vec2(offset.x, offset.y / aspect_ratio);
-    
-    vec2 uv = adjustedUV / zoomIn + adjustedOffset;
+	vec2 uv = adjustedUV / zoomIn + adjustedOffset;
 	
 	
-
 	vec2 z = vec2(0.0);
 	int iter = 0;
     for (int i = 0; i < iterations; i++)
 	{   
-        z = Mandelbrot(z, uv);
+		z = Mandelbrot(z, uv);
 		
 		if (length(z) > 2.0)
 		{
