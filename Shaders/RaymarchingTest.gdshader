@@ -46,8 +46,6 @@ float MixShapes(float a, float b, float m)
 	return mix(a, b, m);
 }
 
-
-
 float MapScene(vec3 pos)
 {
 	// rotate all the shapes according to a rotation uniform
